@@ -1,0 +1,13 @@
+Implement Load Balancing on Compute Engine
+
+Implement Load Balancing on Compute Engine: Challenge Lab
+
+Task 1. Create a project jumphost instance
+You will use this instance to perform maintenance for the project.
+
+Requirements:
+
+Name the instance Instance name.
+Create the instance in the ZONE zone.
+Use an e2-micro machine type.
+Use the default image type (Debian Linux).
