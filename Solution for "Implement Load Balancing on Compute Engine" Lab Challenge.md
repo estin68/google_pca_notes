@@ -19,7 +19,7 @@
 
     > ```bash
     > gcloud compute instance create nucleus-jumphost-712 \
-    > --zone=Zone \ 
+    > --zone=us-west3-b \ 
     > --machine-type=e2-micro \
     > --image-family=debian-11 \
     > --image-project=debian-cloud
