@@ -10,17 +10,17 @@
 - Use the default image type (Debian Linux).
 
     > ```bash
-    > gcloud config set compute/region REGION
+    > gcloud config set compute/region us-west3
     > ```
 
     > ```bash
-    > gcloud config set compute/zone ZONE
+    > gcloud config set compute/zone us-west3-b
     > ```
 
     > ```bash
-    > gcloud compute instance create nucleus-jumphost-712 \
-    > --zone=us-west3-b \ 
+    > gcloud compute instances create nucleus-jumphost-712 \
     > --machine-type=e2-micro \
+    > --zone=us-west3-b \
     > --image-family=debian-11 \
     > --image-project=debian-cloud
     > ```
@@ -46,6 +46,7 @@
         --metadata-from-file startup-script=startup.sh \
         --tags network-lb-tag \
         --machine-type e2-medium
+        --global
     ```
 
 3. **Create a managed instance group**
@@ -55,7 +56,7 @@
         --base-instance-name web-server \
         --size 2 \
         --template web-server-template \
-        --zone=Zone
+        --zone us-west3-b
     ```
 
 4. **Create a firewall rule to allow traffic (80/tcp)**
@@ -63,8 +64,7 @@
     ```bash
     gcloud compute firewall-rules create allow-tcp-rule-684 \
         --allow tcp:80 \
-        --target-tags network-lb-tag \
-        --region Region
+        --target-tags network-lb-tag
     ```
 
 5. **Create a health check**
@@ -87,7 +87,7 @@
 
     gcloud compute backend-services add-backend web-server-backend \
         --instance-group web-server-group \
-        --instance-group-zone=Zone \
+        --instance-group-zone=us-west3-b \
         --global
     ```
 
@@ -105,7 +105,6 @@
 
     ```bash
     gcloud compute forwarding-rules create http-content-rule \
-        --address=lb-ipv4-1 \
         --global \
         --target-http-proxy http-lb-proxy \
         --ports 80
@@ -115,8 +114,17 @@
 
     ```bash
     gcloud compute forwarding-rules list
+
+    Sample ouput:
+    NAME: http-content-rule
+    REGION: 
+    IP_ADDRESS: xx.x.xx.xxx
+    IP_PROTOCOL: TCP
+    TARGET: http-lb-proxy
     ```
 
 10. **Wait for the website to be created behind the HTTP load balancer**
 
-    Wait for approximately 10 minutes for the website to be created behind the HTTP load balancer.
+    Wait for approximately 5-7 minutes for the website to be created behind the HTTP load balancer.
+    You can alternatively open browser tab to the IP xx.x.xx.xxx that you get from `forwarding-rules`
+
