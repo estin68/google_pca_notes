@@ -17,6 +17,14 @@
     > gcloud config set compute/zone ZONE
     > ```
 
+    > ```bash
+    > gcloud compute instance create nucleus-jumphost-712 \
+    > --zone=Zone \ 
+    > --machine-type=e2-small \
+    > --image-family=debian-11 \
+    > --image-project=debian-cloud
+    > ```
+
 #### Task 2. Set up an HTTP load balancer
 
 1. Create a startup.sh file
@@ -38,7 +46,6 @@
         --metadata-from-file startup-script=startup.sh \
         --tags network-lb-tag \
         --machine-type e2-medium
-        --global
     ```
 
 3. **Create a managed instance group**
@@ -48,13 +55,13 @@
         --base-instance-name web-server \
         --size 2 \
         --template web-server-template \
-        --instance-group-zone Zone
+        --zone=Zone
     ```
 
 4. **Create a firewall rule to allow traffic (80/tcp)**
 
     ```bash
-    gcloud compute firewall-rules create web-server-firewall \
+    gcloud compute firewall-rules create allow-tcp-rule-684 \
         --allow tcp:80 \
         --target-tags network-lb-tag \
         --region Region
