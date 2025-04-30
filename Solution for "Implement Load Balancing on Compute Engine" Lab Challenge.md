@@ -1,5 +1,16 @@
 ### Solution for Implement Load Balancing on Compute Engine: Challenge Lab
 
+##### Prerequisite
+Run the following gcloud commands in Cloud Shell to set the default region and zone for your lab:
+*Sample*:
+```bash 
+gcloud config set compute/zone "us-west3-b"
+export ZONE=$(gcloud config get compute/zone)
+
+gcloud config set compute/region "us-west3"
+export REGION=$(gcloud config get compute/region)
+```
+
 #### Task 1. Create a project jumphost instance
 
 ###### Requirements
@@ -9,21 +20,21 @@
 - Use an e2-micro machine type.
 - Use the default image type (Debian Linux).
 
-    > ```bash
-    > gcloud config set compute/region us-west3
-    > ```
+    ```bash
+    gcloud config set compute/region us-west3
+    ```
 
-    > ```bash
-    > gcloud config set compute/zone us-west3-b
-    > ```
+    ```bash
+    gcloud config set compute/zone us-west3-b
+    ```
 
-    > ```bash
-    > gcloud compute instances create nucleus-jumphost-712 \
-    > --machine-type=e2-micro \
-    > --zone=us-west3-b \
-    > --image-family=debian-11 \
-    > --image-project=debian-cloud
-    > ```
+    ```bash
+    gcloud compute instances create nucleus-jumphost-712 \
+    --machine-type=e2-micro \
+    --zone=us-west3-b \
+    --image-family=debian-11 \
+    --image-project=debian-cloud
+    ```
 
 #### Task 2. Set up an HTTP load balancer
 
